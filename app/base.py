@@ -26,6 +26,7 @@ def load_data(path):
     try:
         with open(path, 'r') as file:
             data = json.load(file)
+            return data
     except:
         data =  {
             "RegisterBrokerRecords": {
@@ -55,12 +56,19 @@ def save_data(path,data):
     with open(path, 'w') as file:
         json.dump(data, file, indent=2)
 
+def checkBrokerExists(brokerData,data):
+    found_dict = next((broker for broker in data if broker.get("brokerId") == brokerData['brokerId']), None)
+    return found_dict
+
 
 # CRUD API Endpoints
 @app.post("/register_broker/")
 async def register_broker(broker: BrokerRecord):
-    filePath = f"./metadata-{broker.brokerPort}.json"
+    filePath = "./metadata-8000.json"
     data = load_data(filePath)
+    foundDict = checkBrokerExists(broker.dict(),data["RegisterBrokerRecords"]["records"])
+    if(foundDict):
+        return foundDict['internal_uuid']
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     data["RegisterBrokerRecords"]['timestamp'] = timestamp
     serverSetup = broker.dict()
@@ -69,17 +77,25 @@ async def register_broker(broker: BrokerRecord):
     serverSetup["epoch"] = 0
     data["RegisterBrokerRecords"]["records"].append(serverSetup)
     save_data(filePath,data)
-    return serverSetup
+    return serverSetup["internal_uuid"]
 
 @app.get("/brokers/")
-async def get_brokers():
-    # Logic to get all brokers
-    pass
+async def get_broker():
+    filePath = "./metadata-8000.json"
+    data = load_data(filePath)
+    return data["RegisterBrokerRecords"]["records"]
 
 @app.delete("/broker/{broker_id}")
 async def delete_broker(broker_id: int):
-    # Logic to delete a broker
-    pass
+    filePath = "./metadata-8000.json"
+    data = load_data(filePath)
+    brokers = data["RegisterBrokerRecords"]["records"]
+    index = next((index for index, broker in enumerate(brokers) if broker.get("brokerId") == broker_id), None)
+    if index is not None:
+        deletedBroker = brokers.pop(index)
+    data["RegisterBrokerRecords"]["records"] = brokers
+    save_data(filePath,data)
+    return deletedBroker
 
 # ... Define other CRUD endpoints
 

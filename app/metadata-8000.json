@@ -2,17 +2,17 @@
   "RegisterBrokerRecords": {
     "records": [
       {
-        "brokerId": 0,
+        "brokerId": 5,
         "brokerHost": "127.0.0.1",
         "brokerPort": 8005,
         "securityProtocol": "",
         "rackId": "",
-        "internal_uuid": "4be09e43-8369-417a-956f-7a3a2bf24713",
+        "internal_uuid": "93bde4d7-1001-405b-bfc5-7295269e34ae",
         "brokerStatus": "ALIVE",
         "epoch": 0
       }
     ],
-    "timestamp": "2023-11-20 01:22:31"
+    "timestamp": "2023-11-20 01:58:01"
   },
   "TopicRecord": {
     "records": [],
