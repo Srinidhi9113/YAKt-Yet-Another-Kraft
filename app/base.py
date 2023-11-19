@@ -2,13 +2,18 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
 import json
+from datetime import datetime
+import uuid
 
 app = FastAPI()
 
 # Define your Pydantic models here
 class BrokerRecord(BaseModel):
-    # Define the fields according to your JSON schema
-    pass
+    brokerId: int
+    brokerHost:str
+    brokerPort:int
+    securityProtocol:str
+    rackId:str
 
 class TopicRecord(BaseModel):
     # Define the fields
@@ -17,19 +22,29 @@ class TopicRecord(BaseModel):
 # ... Define other models
 
 # Utility functions to handle data storage and retrieval
-def load_data():
-    # Load data from JSON file
-    pass
+def load_data(path):
+    with open(path, 'r') as file:
+        data = json.load(file)
+    return data
 
-def save_data(data):
-    # Save data to JSON file
-    pass
+def save_data(path,data):
+    with open(path, 'w') as file:
+        json.dump(data, file, indent=2)
+
 
 # CRUD API Endpoints
 @app.post("/register_broker/")
 async def register_broker(broker: BrokerRecord):
-    # Logic to register a broker
-    pass
+    data = load_data("./metadata_8000.json")
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data["RegisterBrokerRecords"]['timestamp'] = timestamp
+    serverSetup = broker.dict()
+    serverSetup["internal_uuid"] = str(uuid.uuid4())
+    serverSetup["brokerStatus"] = "ALIVE"
+    serverSetup["epoch"] = 0
+    data["RegisterBrokerRecords"]["records"].append(serverSetup)
+    save_data("./metadata_8000.json",data)
+    return serverSetup
 
 @app.get("/brokers/")
 async def get_brokers():
