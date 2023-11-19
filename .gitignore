@@ -106,5 +106,5 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 
-/vidyo-venv
-/client
+/archives
+raft/archives/
