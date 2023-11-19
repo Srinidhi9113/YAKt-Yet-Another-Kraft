@@ -4,15 +4,15 @@
       {
         "brokerId": 0,
         "brokerHost": "127.0.0.1",
-        "brokerPort": 8001,
+        "brokerPort": 8005,
         "securityProtocol": "",
         "rackId": "",
-        "internal_uuid": "ce5bc92a-30b5-478a-bd4a-c4c8512221d2",
+        "internal_uuid": "4be09e43-8369-417a-956f-7a3a2bf24713",
         "brokerStatus": "ALIVE",
         "epoch": 0
       }
     ],
-    "timestamp": "2023-11-20 01:19:47"
+    "timestamp": "2023-11-20 01:22:31"
   },
   "TopicRecord": {
     "records": [],

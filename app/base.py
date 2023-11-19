@@ -23,9 +23,33 @@ class TopicRecord(BaseModel):
 
 # Utility functions to handle data storage and retrieval
 def load_data(path):
-    with open(path, 'r') as file:
-        data = json.load(file)
-    return data
+    try:
+        with open(path, 'r') as file:
+            data = json.load(file)
+    except:
+        data =  {
+            "RegisterBrokerRecords": {
+                "records": [],
+                "timestamp": ""
+            },
+            "TopicRecord": {
+                "records": [],
+                "timestamp": ""
+            },
+            "PartitionRecord": {
+                "records": [],
+                "timestamp": ""
+            },
+            "ProducerIdsRecord": {
+                "records": [],
+                "timestamp": ""
+            },
+            "RegistrationChangeBrokerRecord": {
+                "records": [],
+                "timestamp": ""
+            }
+        }
+        return data
 
 def save_data(path,data):
     with open(path, 'w') as file:
@@ -35,7 +59,8 @@ def save_data(path,data):
 # CRUD API Endpoints
 @app.post("/register_broker/")
 async def register_broker(broker: BrokerRecord):
-    data = load_data("./metadata_8000.json")
+    filePath = f"./metadata-{broker.brokerPort}.json"
+    data = load_data(filePath)
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     data["RegisterBrokerRecords"]['timestamp'] = timestamp
     serverSetup = broker.dict()
@@ -43,7 +68,7 @@ async def register_broker(broker: BrokerRecord):
     serverSetup["brokerStatus"] = "ALIVE"
     serverSetup["epoch"] = 0
     data["RegisterBrokerRecords"]["records"].append(serverSetup)
-    save_data("./metadata_8000.json",data)
+    save_data(filePath,data)
     return serverSetup
 
 @app.get("/brokers/")
