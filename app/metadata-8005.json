@@ -1,0 +1,33 @@
+{
+  "RegisterBrokerRecords": {
+    "records": [
+      {
+        "brokerId": 0,
+        "brokerHost": "127.0.0.1",
+        "brokerPort": 8005,
+        "securityProtocol": "",
+        "rackId": "",
+        "internal_uuid": "36d459bf-f32a-4b24-bae2-de2352cc65ff",
+        "brokerStatus": "ALIVE",
+        "epoch": 0
+      }
+    ],
+    "timestamp": "2023-11-20 02:04:49"
+  },
+  "TopicRecord": {
+    "records": [],
+    "timestamp": ""
+  },
+  "PartitionRecord": {
+    "records": [],
+    "timestamp": ""
+  },
+  "ProducerIdsRecord": {
+    "records": [],
+    "timestamp": ""
+  },
+  "RegistrationChangeBrokerRecord": {
+    "records": [],
+    "timestamp": ""
+  }
+}

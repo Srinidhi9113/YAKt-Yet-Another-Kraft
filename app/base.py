@@ -4,11 +4,18 @@ from typing import List, Optional
 import json
 from datetime import datetime
 import uuid
+from datetime import datetime
+import uuid
 
 app = FastAPI()
 
 # Define your Pydantic models here
 class BrokerRecord(BaseModel):
+    brokerId: int
+    brokerHost:str
+    brokerPort:int
+    securityProtocol:str
+    rackId:str
     brokerId: int
     brokerHost:str
     brokerPort:int
@@ -22,6 +29,44 @@ class TopicRecord(BaseModel):
 # ... Define other models
 
 # Utility functions to handle data storage and retrieval
+def load_data(path):
+    try:
+        with open(path, 'r') as file:
+            data = json.load(file)
+            return data
+    except:
+        data =  {
+            "RegisterBrokerRecords": {
+                "records": [],
+                "timestamp": ""
+            },
+            "TopicRecord": {
+                "records": [],
+                "timestamp": ""
+            },
+            "PartitionRecord": {
+                "records": [],
+                "timestamp": ""
+            },
+            "ProducerIdsRecord": {
+                "records": [],
+                "timestamp": ""
+            },
+            "RegistrationChangeBrokerRecord": {
+                "records": [],
+                "timestamp": ""
+            }
+        }
+        return data
+
+def save_data(path,data):
+    with open(path, 'w') as file:
+        json.dump(data, file, indent=2)
+
+def checkBrokerExists(brokerData,data):
+    found_dict = next((broker for broker in data if broker.get("brokerId") == brokerData['brokerId']), None)
+    return found_dict
+
 def load_data(path):
     try:
         with open(path, 'r') as file:
@@ -93,10 +138,9 @@ async def delete_broker(broker_id: int):
     index = next((index for index, broker in enumerate(brokers) if broker.get("brokerId") == broker_id), None)
     if index is not None:
         deletedBroker = brokers.pop(index)
-        data["RegisterBrokerRecords"]["records"] = brokers
-        save_data(filePath,data)
-        return deletedBroker
-    return "Broker Does Not Exist"
+    data["RegisterBrokerRecords"]["records"] = brokers
+    save_data(filePath,data)
+    return deletedBroker
 
 # ... Define other CRUD endpoints
 
