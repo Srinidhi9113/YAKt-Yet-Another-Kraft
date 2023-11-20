@@ -2,63 +2,91 @@
   "RegisterBrokerRecords": {
     "records": [
       {
-        "internalUUID": "", // type: string
-        "brokerId": 0, // type: int
-        "brokerHost": "", // type: string
-        "brokerPort": "", // type: string
-        "securityProtocol": "", // type: string
-        "brokerStatus": "", // type: string
-        "rackId": "", // type: string
-        "epoch": 0 // type: int; epoch number given by the quorum controller
+        "brokerId": 0,
+        "brokerHost": "127.0.0.1",
+        "brokerPort": 8005,
+        "securityProtocol": "",
+        "rackId": "",
+        "internal_uuid": "23b4cf6d-5674-4fb0-b5ad-401f0dfdbd0e",
+        "brokerStatus": "INIT",
+        "epoch": 1
+      },
+      {
+        "brokerId": 1,
+        "brokerHost": "127.0.0.1",
+        "brokerPort": 8005,
+        "securityProtocol": "",
+        "rackId": "",
+        "internal_uuid": "1a88b4e1-cf17-4ade-8c4a-04e59ae63431",
+        "brokerStatus": "ALIVE",
+        "epoch": 0
+      },
+      {
+        "brokerId": 2,
+        "brokerHost": "127.0.0.1",
+        "brokerPort": 8005,
+        "securityProtocol": "",
+        "rackId": "",
+        "internal_uuid": "4b4e8c09-dc77-47c3-b973-855898db346d",
+        "brokerStatus": "ALIVE",
+        "epoch": 0
+      },
+      {
+        "brokerId": 3,
+        "brokerHost": "127.0.0.1",
+        "brokerPort": 8005,
+        "securityProtocol": "",
+        "rackId": "",
+        "internal_uuid": "632bd44d-3aa2-40d7-a4e4-d9a9138be79e",
+        "brokerStatus": "ALIVE",
+        "epoch": 0
+      },
+      {
+        "brokerId": 4,
+        "brokerHost": "127.0.0.1",
+        "brokerPort": 8005,
+        "securityProtocol": "",
+        "rackId": "",
+        "internal_uuid": "a0e50d27-195a-4dad-9f8a-4faa107e41cf",
+        "brokerStatus": "ALIVE",
+        "epoch": 0
       }
     ],
-    "timestamp": ""
+    "timestamp": "2023-11-20 20:48:51"
   },
   "TopicRecord": {
     "records": [
       {
-        "topicUUID": "", // type: string
-        "name": "" // type: string
+        "name": "Topic-2",
+        "topicUUID": "983ca066-21df-4c1a-8cc2-40f8b2e4076c"
       }
     ],
-    "timestamp": ""
+    "timestamp": "2023-11-20 20:40:50"
   },
   "PartitionRecord": {
-    "records": [
-      {
-        "partitionId": 0, // type: int
-        "topicUUID": "", // type: string
-        "replicas": [], // type: []int; list of broker IDs with replicas
-        "ISR": [], // type: []int; list of insync broker ids
-        "removingReplicas": [], // type: []int; list of replicas in process of removal
-        "addingReplicas": [], // type: []int; list of replicas in the process of addition
-        "leader": "", // type: string; uuid of broker who is leader for partition
-        "partitionEpoch": 0 // type: int; number that incrementatlly changes with changes made to partition
-      }
-    ],
-    "timestamp": ""
+    "records": [],
+    "timestamp": "2023-11-20 20:45:20"
   },
   "ProducerIdsRecord": {
     "records": [
       {
-        "brokerId": "", // type : string; uuid of requesting broker
-        "brokerEpoch": 0, // type : int; the epoch at which broker requested
-        "producerId": 0 // type : int; producer id requested
+        "brokerId": "23b4cf6d-5674-4fb0-b5ad-401f0dfdbd0e",
+        "brokerEpoch": 1,
+        "producerId": 0
       }
     ],
-    "timestamp": ""
+    "timestamp": "2023-11-20 20:57:24"
   },
   "RegistrationChangeBrokerRecord": {
     "records": [
       {
-        "brokerId": "", // type: string
-        "brokerHost": "", // type: string
-        "brokerPort": "", // type: string
-        "securityProtocol": "", // type: string
-        "brokerStatus": "", // type: string
-        "epoch": 0 // type: int; epoch number given by the quorum controller
+        "brokerId": 0,
+        "brokerHost": "127.0.0.1",
+        "brokerPort": 8005,
+        "securityProtocol": "",
+        "brokerStatus": "INIT"
       }
     ],
-    "timestamp": ""
+    "timestamp": "2023-11-20 20:48:51"
   }
 }
