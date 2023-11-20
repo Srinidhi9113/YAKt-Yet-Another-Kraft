@@ -1,64 +1,22 @@
 {
   "RegisterBrokerRecords": {
-    "records": [
-      {
-        "internalUUID": "",
-        "brokerId": 0,
-        "brokerHost": "",
-        "brokerPort": "",
-        "securityProtocol": "",
-        "brokerStatus": "",
-        "rackId": "",
-        "epoch": 0
-      }
-    ],
+    "records": [],
     "timestamp": ""
   },
   "TopicRecord": {
-    "records": [
-      {
-        "topicUUID": "",
-        "name": ""
-      }
-    ],
+    "records": [],
     "timestamp": ""
   },
   "PartitionRecord": {
-    "records": [
-      {
-        "partitionId": 0,
-        "topicUUID": "",
-        "replicas": [],
-        "ISR": [],
-        "removingReplicas": [],
-        "addingReplicas": [],
-        "leader": "",
-        "partitionEpoch": 0
-      }
-    ],
+    "records": [],
     "timestamp": ""
   },
   "ProducerIdsRecord": {
-    "records": [
-      {
-        "brokerId": "",
-        "brokerEpoch": 0,
-        "producerId": 0
-      }
-    ],
+    "records": [],
     "timestamp": ""
   },
   "RegistrationChangeBrokerRecord": {
-    "records": [
-      {
-        "brokerId": "",
-        "brokerHost": "",
-        "brokerPort": "",
-        "securityProtocol": "",
-        "brokerStatus": "",
-        "epoch": 0
-      }
-    ],
+    "records": [],
     "timestamp": ""
   }
 }
