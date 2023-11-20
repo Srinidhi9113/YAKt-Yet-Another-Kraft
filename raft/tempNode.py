@@ -24,8 +24,10 @@ class Node:
         self.current_term = 0
         self.config = self.read_config("config.json")
         self.leader = leader
+        self.candidate = False
         self.random_shutdown_delay = 0
         self.create_node_files()
+        self.registered = False
         threading.Thread(target=self.node_task, daemon=True).start()
 
 
@@ -203,8 +205,11 @@ class Node:
     def send_voteRequest(self,follower_port,leader_port):
         try:
             response = requests.get(f"http://localhost:{follower_port}/vote/{leader_port}")
-            if(response=="Voted"):
+            if(response.text=='"Voted"'):
                 print(f"Vote acknowledged!!! New Leader - {leader_port}")
+            else:
+                print(f"Restart Election!!!")
+                self.candidate = False
             # self.update_eventlog("sent", follower_port)
         except requests.RequestException:
             print(f"Failed to send vote to follower on port {follower_port}")
@@ -217,13 +222,15 @@ class Node:
             time.sleep(1)
             if self.last_heartbeat_time and datetime.now() - self.last_heartbeat_time > timedelta(seconds=self.timeout):
                 print("Leader is dead")
+                self.leader = 0
                 break
         config = self.read_config("config.json")
         config["is_election"] = True
         self.write_config("config.json", config)
 
         self.random_shutdown_delay = random.randint(1, 10)  # Generate a random delay between 1 to 10 seconds
-        print(f"Becoming leader in {self.random_shutdown_delay} seconds...")
+        # self.random_shutdown_delay = 5
+        print(f"Becoming Candidate in {self.random_shutdown_delay} seconds...")
         # time.sleep(random_shutdown_delay)  # Sleep for the random delay
         start_time = time.time()
         while(time.time() - start_time <= self.random_shutdown_delay):
@@ -231,37 +238,42 @@ class Node:
 
         self.config = self.read_config("config.json")
 
-        print("I am the Candidate Now!!!")
-        print("Sending vote request...")
-
+        if(self.leader==0):
+            self.candidate = True
+            print("I am the Candidate Now!!!")
+            print("Sending vote request...")      
+        
         if self.config["is_election"]:
-            self.config["follower_nodes"].remove(self.port)
-            threads = []
-            for follower_port in self.config["follower_nodes"]:
-                thread = threading.Thread(target=self.send_voteRequest, args=(follower_port,self.port))
-                thread.start()
-                threads.append(thread)
+            if self.candidate:
+                self.config["follower_nodes"].remove(self.port)
+                threads = []
+                for follower_port in self.config["follower_nodes"]:
+                    thread = threading.Thread(target=self.send_voteRequest, args=(follower_port,self.port))
+                    thread.start()
+                    threads.append(thread)
 
-            for thread in threads:
-                thread.join()
-            
-            print("I am the leader now")
-            
-            print("config before modification", config)
-            
-            config["is_election"] = False
-            config["leader_node"] = self.port
-            # i want to remove the leader node port from the follower nodes
-            for follower_port in config["follower_nodes"]:
-                if int(follower_port) == int(self.port):
-                    config["follower_nodes"].remove(int(follower_port))
-            self.write_config("config.json", config)
-            
-            config = self.read_config("config.json")
-            print("config after modification", config)
-            
-            self.write_config("config.json", config)
-            self.leader = config["leader_node"]
+                for thread in threads:
+                    thread.join()
+            if self.candidate:
+                self.candidate = False
+                print("I am the leader now")
+                
+                print("config before modification", config)
+                
+                config["is_election"] = False
+                config["leader_node"] = self.port
+                # i want to remove the leader node port from the follower nodes
+                for follower_port in config["follower_nodes"]:
+                    if int(follower_port) == int(self.port):
+                        config["follower_nodes"].remove(int(follower_port))
+                self.write_config("config.json", config)
+                
+                config = self.read_config("config.json")
+                print("config after modification", config)
+                
+                self.write_config("config.json", config)
+                self.leader = config["leader_node"]
+
         else:
             config = self.read_config("config.json")
             print("this if the config follower sees", config)
@@ -272,7 +284,9 @@ class Node:
     def node_task(self):
         while True:
             self.heartbeat_task()
-            self.register_with_leader(self.leader)
+            if(not self.registered): 
+                self.register_with_leader(self.leader)
+                self.registered = True
             self.monitor_heartbeat()
 
 @app.post("/register_follower")
@@ -300,12 +314,16 @@ async def register_follower(follower_data: FollowerRegistration, background_task
 
 @app.get("/vote/{leader}")
 def recv_vote(leader:int):
-    node.random_shutdown_delay += 3
-    node.config = node.read_config("config.json")
-    node.leader = leader
-    node.config['is_election'] = False
-    node.write_config("config.json",node.config)
-    return "Voted"
+    if(not node.candidate):
+        node.random_shutdown_delay += 3
+        node.config = node.read_config("config.json")
+        node.leader = leader
+        node.config['is_election'] = False
+        node.write_config("config.json",node.config)
+        return "Voted"
+    node.candidate = False
+    return "Start Election Again"
+    
 
 @app.post("/heartbeat")
 def heartbeat(metadata: dict):
