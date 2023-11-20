@@ -190,9 +190,6 @@ async def metadata_fetch():
     # Logic for metadata fetch
     pass
 
-
-
-
 # Client Management API Endpoints
 
 ## Register a producer
