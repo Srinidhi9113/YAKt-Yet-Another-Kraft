@@ -23,8 +23,19 @@
     "timestamp": ""
   },
   "ProducerIdsRecord": {
-    "records": [],
-    "timestamp": ""
+    "records": [
+      {
+        "brokerId": "0",
+        "brokerEpoch": 0,
+        "producerId": "895079ec-9a31-4dde-b500-cea8090493f1"
+      },
+      {
+        "brokerId": "0",
+        "brokerEpoch": 0,
+        "producerId": "ec078dbe-e06b-4194-a032-e738eda9a9c8"
+      }
+    ],
+    "timestamp": "2023-11-20 10:26:17"
   },
   "RegistrationChangeBrokerRecord": {
     "records": [],

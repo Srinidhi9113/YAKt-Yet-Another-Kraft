@@ -4,22 +4,23 @@ from typing import List, Optional
 import json
 from datetime import datetime
 import uuid
-
+from pydantics import *
 app = FastAPI()
 
-# Define your Pydantic models here
-class BrokerRecord(BaseModel):
-    brokerId: int
-    brokerHost:str
-    brokerPort:int
-    securityProtocol:str
-    rackId:str
+'''    # Define your Pydantic models here
+    class BrokerRecord(BaseModel):
+        brokerId: int
+        brokerHost:str
+        brokerPort:int
+        securityProtocol:str
+        rackId:str
 
-class TopicRecord(BaseModel):
-    # Define the fields
-    pass
+    class TopicRecord(BaseModel):
+        # Define the fields
+        pass
 
-# ... Define other models
+    # ... Define other models
+'''
 
 # Utility functions to handle data storage and retrieval
 def load_data(path):
@@ -60,13 +61,16 @@ def checkBrokerExists(brokerData,data):
     found_dict = next((broker for broker in data if broker.get("brokerId") == brokerData['brokerId']), None)
     return found_dict
 
+def checkProducerExists(brokerData,data):
+    found_dict = next((broker for broker in data if broker.get("producerId") == brokerData['producerId']), None)
+    return found_dict
 
 # CRUD API Endpoints
 @app.post("/register_broker/")
-async def register_broker(broker: BrokerRecord):
+async def register_broker(broker: RegisterBrokerRecords):
     filePath = "./metadata-8000.json"
     data = load_data(filePath)
-    foundDict = checkBrokerExists(broker.dict(),data["RegisterBrokerRecords"]["records"])
+    foundDict = checkBrokerExists(broker.dict().data["RegisterBrokerRecords"]["records"])
     if(foundDict):
         return foundDict['internal_uuid']
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -114,9 +118,21 @@ async def metadata_fetch():
 
 # Client Management API Endpoints
 @app.post("/register_producer/")
-async def register_producer():
-    # Logic to register a producer
-    pass
+async def register_producer(producer: ProducerIdsRecord):
+    filePath = "./metadata-8000.json"
+    data = load_data(filePath)
+    foundDict = checkProducerExists(producer.dict(),data["ProducerIdsRecord"]["records"])
+    if(foundDict):
+        return foundDict['producerId']
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    data["ProducerIdsRecord"]['timestamp'] = timestamp
+    serverSetup = producer.dict()
+    serverSetup["producerId"] = str(uuid.uuid4())
+    # serverSetup["brokerStatus"] = "ALIVE"
+    serverSetup["brokerEpoch"] = 0
+    data["ProducerIdsRecord"]["records"].append(serverSetup)
+    save_data(filePath,data)
+    return serverSetup["producerId"]
 
 @app.get("/metadata_fetch_client/")
 async def metadata_fetch_client():
