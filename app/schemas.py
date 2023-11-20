@@ -20,9 +20,13 @@ class TopicRecord(BaseModel):
 
 class PartitionRecord(BaseModel):
     partitionId: int
+    topicUUID: str
     replicas: List[str]
-    ISR: List[str]
+    ISR: List[int]
     leader: str
+    removingReplicas: List[int]
+    addingReplicas: List[int]
+    partitionEpoch: List[int]
 
 
 class ProducerIdsRecord(BaseModel):

@@ -33,7 +33,7 @@ async def register_broker(broker: BrokerRecord):
 
 
 ## Get all brokers
-@app.get("/get_brokers/")
+@app.get("/get_broker/")
 async def get_allbrokers():
     filePath = "./metadata-8000.json"
     data = load_data(filePath)
@@ -92,7 +92,7 @@ async def getTopicByName(topicName:str):
     return "Topic Not Found"
 
 ## Get all topics 
-@app.get("/get_topics/")
+@app.get("/get_topic/")
 async def getAllTopics():
     filePath = "./metadata-8000.json"
     data = load_data(filePath)
@@ -140,7 +140,7 @@ async def get_partitionByID(partitionId:int):
     return "Partition Not Found"
 
 ## Get all partitions
-@app.get("/get_partitions/")
+@app.get("/get_partition/")
 async def get_allpartitions():
     filePath = "./metadata-8000.json"
     data = load_data(filePath)
@@ -225,7 +225,7 @@ async def get_producer(searchParam):
     return "Producer Not Found"
 
 ## Get all producers
-@app.get("/get_producers/")
+@app.get("/get_producer/")
 async def get_producers():
     filePath = "./metadata-8000.json"
     data = load_data(filePath)
