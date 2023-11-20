@@ -1,0 +1,22 @@
+{
+  "RegisterBrokerRecords": {
+    "records": [],
+    "timestamp": ""
+  },
+  "TopicRecord": {
+    "records": [],
+    "timestamp": ""
+  },
+  "PartitionRecord": {
+    "records": [],
+    "timestamp": ""
+  },
+  "ProducerIdsRecord": {
+    "records": [],
+    "timestamp": ""
+  },
+  "RegistrationChangeBrokerRecord": {
+    "records": [],
+    "timestamp": ""
+  }
+}

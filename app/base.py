@@ -104,8 +104,8 @@ async def delete_topicByName(topicName: str):
     filePath = "./metadata-8000.json"
     data = load_data(filePath)
     topics = data["TopicRecord"]["records"]
-    index = next((index for index, topic in enumerate(topics) if topic.get("brokerId") == topicName), None)
-    deleteTopic = None
+    index = next((index for index, topic in enumerate(topics) if topic.get("name") == topicName), None)
+    deletedTopic = None
     if index is not None:
         deletedTopic = topics.pop(index)
     data["TopicRecord"]["records"] = topics
@@ -152,7 +152,7 @@ async def delete_partition(partition_id: int):
     filePath = "./metadata-8000.json"
     data = load_data(filePath)
     partitions = data["PartitionRecord"]["records"]
-    index = next((index for index, partition in enumerate(partitions) if partition.get("brokerId") == partition_id), None)
+    index = next((index for index, partition in enumerate(partitions) if partition.get("partitionId") == partition_id), None)
     deletedPartition = None
     if index is not None:
         deletedPartition = partitions.pop(index)
@@ -179,10 +179,11 @@ async def register_broker_change(brokerChange:BrokerChangeRecord):
             data["RegisterBrokerRecords"]["timestamp"] = timestamp
             data["RegistrationChangeBrokerRecord"]["timestamp"] = timestamp
         
-    data["RegisterBrokerRecords"]["records"] = brokers
-    data["RegistrationChangeBrokerRecord"]["records"].append(brokerChange)
-    save_data(filePath,data)
-    return "Changes Updated Successfully"
+            data["RegisterBrokerRecords"]["records"] = brokers
+            data["RegistrationChangeBrokerRecord"]["records"].append(brokerChange)
+            save_data(filePath,data)
+            return "Changes Updated Successfully"
+    return "Broker Not Found"
     
 ## Fetch Changes from last timestamp
 @app.post("/metadata_fetch/")
@@ -190,47 +191,17 @@ async def metadata_fetch():
     # Logic for metadata fetch
     pass
 
+
+
+
 # Client Management API Endpoints
 
 ## Register a producer
 @app.post("/register_producer/")
-async def register_producer(producerRecord: ProducerIdsRecord):
-    filePath = "./metadata-8000.json"
-    data = load_data(filePath)
-    foundDict = checkProducerExists(producerRecord.dict(),data["ProducerIdsRecord"]["records"])
-    if(foundDict):
-        return foundDict['producerId']
-    serverSetup = producerRecord.dict()
-    found_dict = next((producer for producer in data["RegisterBrokerRecords"]["records"] if producer.get("brokerId") == serverSetup['brokerId']), None)
-    if found_dict:
-        serverSetup["brokerEpoch"] = found_dict["epoch"]
-        data["ProducerIdsRecord"]["records"].append(serverSetup)
-        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        data["ProducerIdsRecord"]['timestamp'] = timestamp
-        save_data(filePath,data)
-        return "Producer Registered Successfully"
-    return "Broker Not Recognised"
+async def register_producer():
+    # Logic to register a producer
+    pass
 
-## Get producer by searchParams -> {partitionId:int, brokerId: str"uuid"}
-@app.post("/get_producer/")
-async def get_producer(searchParam):
-    filePath = "./metadata-8000.json"
-    data = load_data(filePath)
-    foundDict = checkProducerExists(searchParam.dict(),data["ProducerIdsRecord"]["records"])
-    if(foundDict):
-        return foundDict['producerId']
-    return "Producer Not Found"
-
-## Get all producers
-@app.get("/get_producer/")
-async def get_producers():
-    filePath = "./metadata-8000.json"
-    data = load_data(filePath)
-    return data["ProducerIdsRecord"]["records"]
-
-
-
-## Fetch Broker, Topic and Partition Records
 @app.get("/metadata_fetch_client/")
 async def metadata_fetch_client():
     filePath = "./metadata-8000.json"
