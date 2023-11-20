@@ -93,9 +93,10 @@ async def delete_broker(broker_id: int):
     index = next((index for index, broker in enumerate(brokers) if broker.get("brokerId") == broker_id), None)
     if index is not None:
         deletedBroker = brokers.pop(index)
-    data["RegisterBrokerRecords"]["records"] = brokers
-    save_data(filePath,data)
-    return deletedBroker
+        data["RegisterBrokerRecords"]["records"] = brokers
+        save_data(filePath,data)
+        return deletedBroker
+    return "Broker Does Not Exist"
 
 # ... Define other CRUD endpoints
 
