@@ -1,64 +1,64 @@
 {
-    "RegisterBrokerRecords": {
-      "records": [
-        {
-          "internalUUID": "",
-          "brokerId": 0,
-          "brokerHost": "",
-          "brokerPort": "",
-          "securityProtocol": "",
-          "brokerStatus": "",
-          "rackId": "",
-          "epoch": 0
-        }
-      ],
-      "timestamp": ""
-    },
-    "TopicRecord": {
-      "records": [
-        {
-          "topicUUID": "",
-          "name": ""
-        }
-      ],
-      "timestamp": ""
-    },
-    "PartitionRecord": {
-      "records": [
-        {
-          "partitionId": 0,
-          "topicUUID": "",
-          "replicas": [],
-          "ISR": [],
-          "removingReplicas": [],
-          "addingReplicas": [],
-          "leader": "",
-          "partitionEpoch": 0
-        }
-      ],
-      "timestamp": ""
-    },
-    "ProducerIdsRecord": {
-      "records": [
-        {
-          "brokerId": "",
-          "brokerEpoch": 0,
-          "producerId": 0
-        }
-      ],
-      "timestamp": ""
-    },
-    "RegistrationChangeBrokerRecord": {
-      "records": [
-        {
-          "brokerId": "",
-          "brokerHost": "",
-          "brokerPort": "",
-          "securityProtocol": "",
-          "brokerStatus": "",
-          "epoch": 0
-        }
-      ],
-      "timestamp": ""
-    }
+  "RegisterBrokerRecords": {
+    "records": [
+      {
+        "internalUUID": "",
+        "brokerId": 0,
+        "brokerHost": "",
+        "brokerPort": "",
+        "securityProtocol": "",
+        "brokerStatus": "",
+        "rackId": "",
+        "epoch": 0
+      }
+    ],
+    "timestamp": ""
+  },
+  "TopicRecord": {
+    "records": [
+      {
+        "topicUUID": "",
+        "name": ""
+      }
+    ],
+    "timestamp": ""
+  },
+  "PartitionRecord": {
+    "records": [
+      {
+        "partitionId": 0,
+        "topicUUID": "",
+        "replicas": [],
+        "ISR": [],
+        "removingReplicas": [],
+        "addingReplicas": [],
+        "leader": "",
+        "partitionEpoch": 0
+      }
+    ],
+    "timestamp": ""
+  },
+  "ProducerIdsRecord": {
+    "records": [
+      {
+        "brokerId": "",
+        "brokerEpoch": 0,
+        "producerId": 0
+      }
+    ],
+    "timestamp": ""
+  },
+  "RegistrationChangeBrokerRecord": {
+    "records": [
+      {
+        "brokerId": "",
+        "brokerHost": "",
+        "brokerPort": "",
+        "securityProtocol": "",
+        "brokerStatus": "",
+        "epoch": 0
+      }
+    ],
+    "timestamp": ""
   }
+}
