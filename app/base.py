@@ -198,10 +198,43 @@ async def metadata_fetch():
 
 ## Register a producer
 @app.post("/register_producer/")
-async def register_producer():
-    # Logic to register a producer
-    pass
+async def register_producer(producerRecord: ProducerIdsRecord):
+    filePath = "./metadata-8000.json"
+    data = load_data(filePath)
+    foundDict = checkProducerExists(producerRecord.dict(),data["ProducerIdsRecord"]["records"])
+    if(foundDict):
+        return foundDict['producerId']
+    serverSetup = producerRecord.dict()
+    found_dict = next((producer for producer in data["RegisterBrokerRecords"]["records"] if producer.get("internal_uuid") == serverSetup['brokerId']), None)
+    if found_dict:
+        serverSetup["brokerEpoch"] = found_dict["epoch"]
+        data["ProducerIdsRecord"]["records"].append(serverSetup)
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        data["ProducerIdsRecord"]['timestamp'] = timestamp
+        save_data(filePath,data)
+        return "Producer Registered Successfully"
+    return "Broker Not Recognised"
 
+## Get producer by searchParams -> {partitionId:int, brokerId: str"uuid"}
+@app.post("/get_producer/")
+async def get_producer(searchParam:SearchParam):
+    filePath = "./metadata-8000.json"
+    data = load_data(filePath)
+    foundDict = checkProducerExists(searchParam.dict(),data["ProducerIdsRecord"]["records"])
+    if(foundDict):
+        return foundDict
+    return "Producer Not Found"
+
+## Get all producers
+@app.get("/get_producer/")
+async def get_producers():
+    filePath = "./metadata-8000.json"
+    data = load_data(filePath)
+    return data["ProducerIdsRecord"]["records"]
+
+
+
+## Fetch Broker, Topic and Partition Records
 @app.get("/metadata_fetch_client/")
 async def metadata_fetch_client():
     filePath = "./metadata-8000.json"
