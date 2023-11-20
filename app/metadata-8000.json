@@ -8,11 +8,11 @@
         "securityProtocol": "",
         "rackId": "",
         "internal_uuid": "93bde4d7-1001-405b-bfc5-7295269e34ae",
-        "brokerStatus": "ALIVE",
-        "epoch": 0
+        "brokerStatus": "INIT",
+        "epoch": 1
       }
     ],
-    "timestamp": "2023-11-20 01:58:01"
+    "timestamp": "2023-11-20 11:58:15"
   },
   "TopicRecord": {
     "records": [],
@@ -23,11 +23,25 @@
     "timestamp": ""
   },
   "ProducerIdsRecord": {
-    "records": [],
-    "timestamp": ""
+    "records": [
+      {
+        "brokerId": 5,
+        "brokerEpoch": 1,
+        "producerId": 0
+      }
+    ],
+    "timestamp": "2023-11-20 12:19:21"
   },
   "RegistrationChangeBrokerRecord": {
-    "records": [],
-    "timestamp": ""
+    "records": [
+      {
+        "brokerId": 5,
+        "brokerHost": "127.0.0.1",
+        "brokerPort": 8005,
+        "securityProtocol": "",
+        "brokerStatus": "INIT"
+      }
+    ],
+    "timestamp": "2023-11-20 11:58:15"
   }
 }
